@@ -136,6 +136,7 @@ verify_scripts() {
         "04-secure-boot.sh"
         "05-tpm-enroll.sh"
         "06-bootloader.sh"
+        "07-ui.sh"
     )
 
     for script in "${required_scripts[@]}"; do
@@ -181,15 +182,17 @@ show_summary() {
     echo "  • TPM 2.0 automatic unlocking (PCR 7 binding)"
     echo "  • Secure Boot with custom keys (sbctl)"
     echo "  • systemd-boot bootloader"
+    echo "  • XFCE desktop environment with LightDM"
     echo
     echo "Installation steps:"
     echo
-    echo "  [1/6] Partition disk and setup LUKS encryption"
-    echo "  [2/6] Install base system with pacstrap"
-    echo "  [3/6] Configure dracut initramfs"
-    echo "  [4/6] Setup Secure Boot keys and signing"
-    echo "  [5/6] Enroll TPM for automatic disk unlocking"
-    echo "  [6/6] Install and configure systemd-boot"
+    echo "  [1/7] Partition disk and setup LUKS encryption"
+    echo "  [2/7] Install base system with pacstrap"
+    echo "  [3/7] Configure dracut initramfs"
+    echo "  [4/7] Setup Secure Boot keys and signing"
+    echo "  [5/7] Enroll TPM for automatic disk unlocking"
+    echo "  [6/7] Install and configure systemd-boot"
+    echo "  [7/7] Install desktop environment"
     echo
     read -rp "Proceed with installation? [y/N] " response
     if [[ ! "$response" =~ ^[Yy]$ ]]; then
@@ -265,12 +268,13 @@ main() {
     echo "Starting installation..."
     sleep 2
 
-    run_step 1 6 "01-partition.sh" "Disk Partitioning & LUKS Encryption"
-    run_step 2 6 "02-install-base.sh" "Base System Installation"
-    run_step 3 6 "03-setup-dracut.sh" "dracut Initramfs Configuration"
-    run_step 4 6 "04-secure-boot.sh" "Secure Boot Setup (sbctl)"
-    run_step 5 6 "05-tpm-enroll.sh" "TPM Key Enrollment"
-    run_step 6 6 "06-bootloader.sh" "systemd-boot Installation"
+    run_step 1 7 "01-partition.sh" "Disk Partitioning & LUKS Encryption"
+    run_step 2 7 "02-install-base.sh" "Base System Installation"
+    run_step 3 7 "03-setup-dracut.sh" "dracut Initramfs Configuration"
+    run_step 4 7 "04-secure-boot.sh" "Secure Boot Setup (sbctl)"
+    run_step 5 7 "05-tpm-enroll.sh" "TPM Key Enrollment"
+    run_step 6 7 "06-bootloader.sh" "systemd-boot Installation"
+    run_step 7 7 "07-ui.sh" "Desktop Environment Installation"
 
     # Installation complete
     print_section "INSTALLATION COMPLETE"
